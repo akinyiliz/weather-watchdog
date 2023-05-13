@@ -1,6 +1,18 @@
 import "./App.css";
+import { useState } from "react";
 
 function App() {
+	const [weatherData, setWeatherData] = useState([]);
+
+	const WEATHER_API_URL = import.meta.env.VITE_WEATHER_API_URL;
+	const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
+	fetch(`${WEATHER_API_URL}/weather?city=Nairobi&appid=${WEATHER_API_KEY}`)
+		.then((res) => res.json())
+		.then((data) => setWeatherData(data));
+
+	// console.log(weatherData);
+
 	return (
 		<div className="w-full h-screen overflow-y-scroll sm:overflow-hidden app">
 			<div className="max-w-[1240px] mx-auto p-8">
