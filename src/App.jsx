@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FeelsLikeIcon from "./assets/feels_like.svg";
 import WindIcon from "./assets/wind.png";
 import PressureIcon from "./assets/pressure.png";
@@ -25,6 +25,26 @@ function App() {
 		}
 	};
 
+	useEffect(() => {
+		if ("geolocation" in navigator) {
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const latitude = position.coords.latitude;
+					const longitude = position.coords.longitude;
+
+					const currentLocationFetchUrl = `${WEATHER_API_URL}/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${WEATHER_API_KEY}`;
+
+					fetch(currentLocationFetchUrl)
+						.then((res) => res.json())
+						.then((data) => setWeatherData(data));
+				},
+				(error) => console.error("Error getting geolocation:", error)
+			);
+		} else {
+			console.error("Geolocation is not available on this browser");
+		}
+	}, []);
+
 	return (
 		<div className="w-full h-screen overflow-y-scroll sm:overflow-hidden app">
 			<div className="max-w-[900px] mx-auto p-4 lg:p-8">
@@ -47,7 +67,7 @@ function App() {
 						{weatherData.weather ? (
 							<img
 								className="h-[100px] mx-auto sm:h-[200px] "
-								src={`/public/weather-icons/${weatherData.weather[0].icon}.png`}
+								src={`/weather-icons/${weatherData.weather[0].icon}.png`}
 							/>
 						) : null}
 					</div>
