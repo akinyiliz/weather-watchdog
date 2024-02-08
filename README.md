@@ -1,4 +1,4 @@
-# WeatherWatchdog
+# Weather Watchdog
 
 This is a simple weather app that provides users with real-time weather information for current or given location.
 To enable this you have to allow location access.
